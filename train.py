@@ -40,7 +40,7 @@ parser.add_argument('--niter', type=int, default=200, help='total number of trai
 parser.add_argument('--batchnum', type=int, default=4000, help='the number of batch')
 
 #for model_selection
-parser.add_argument('--model', type=str, default="osc", help='osc or oscplus')
+parser.add_argument('--model', type=str, default="oscplus", help='osc or oscplus')
 
 #for filter parameterization
 parser.add_argument('--padding', type=int, default=4, help='the number of padding during convolution')
@@ -65,7 +65,7 @@ parser.add_argument('--lr', type=float, default=0.0002, help='initial learning r
 parser.add_argument("--use_gpu", type=bool, default=True, help='use GPU or not')
 parser.add_argument("--gpu_id", type=str, default="0", help='GPU id')
 parser.add_argument('--log_dir', default='logs/', help='tensorboard logs')
-parser.add_argument('--model_dir', default='model_osc/', help='saving model')
+parser.add_argument('--model_dir', default='model_oscplus/', help='saving model')
 parser.add_argument('--manualSeed', type=int, help='manual seed')
 parser.add_argument('--Xl2', type=float, default=1, help='loss weights for CT image -l2 norm')
 parser.add_argument('--Xl1', type=float, default=5e-4, help='loss weights for CT image-l1 norm')
