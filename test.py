@@ -113,10 +113,18 @@ def test_image(data_path, imag_idx, mask_idx):
 def main():
     # Build model
     print('Loading model ...\n')
+    '''
     if "plus" not in opt.model:
         net= OSCNet(opt).cuda()
     else:
         net= OSCNetplus(opt).cuda()
+        '''
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    if "plus" not in opt.model:
+        net = OSCNet(opt).to(device)
+    else:
+        net = OSCNetplus(opt).to(device)
+
     net.eval()
     net.load_state_dict(torch.load(opt.model_dir))
     print_network(net)
