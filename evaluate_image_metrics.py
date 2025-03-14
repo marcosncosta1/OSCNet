@@ -26,7 +26,7 @@ def dynamic_win_size(image, default=7):
 
 def evaluate_oscnet_image(
         results_dir="./save_results",
-        output_file="oscnet_metrics.txt"
+        output_file="oscnetplus_metrics.txt"
 ):
     """
     Evaluate PSNR and SSIM for OSCNet outputs.
@@ -34,11 +34,11 @@ def evaluate_oscnet_image(
     Expected directory structure:
       results_dir/
        ├─ gt      (ground truth images, e.g., "1.png", "2.png", ...)
-       └─ osc     (OSCNet reconstructed images)
+       └─ osc     (OSCNet reconstructed images) # or oscplus
     """
     # Define folder paths
     gt_dir = os.path.join(results_dir, "gt")
-    osc_dir = os.path.join(results_dir, "osc")
+    osc_dir = os.path.join(results_dir, "oscplus")
 
     # Check that these directories exist
     for d in [gt_dir, osc_dir]:
@@ -103,7 +103,7 @@ def evaluate_oscnet_image(
     )
 
     full_report = (
-            f"OSCNet Image Quality Evaluation\n"
+            f"OSCNet+ Image Quality Evaluation\n"
             f"Date: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
             f"Results Directory: {os.path.abspath(results_dir)}\n\n"
             + table_header + "\n" +
@@ -119,9 +119,9 @@ def evaluate_oscnet_image(
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Evaluate OSCNet image quality metrics")
+    parser = argparse.ArgumentParser(description="Evaluate OSCNet+ image quality metrics")
     parser.add_argument("--results_dir", type=str, default="./save_results", help="Directory containing the results")
-    parser.add_argument("--output_file", type=str, default="oscnet_metrics.txt", help="Filename for the output report")
+    parser.add_argument("--output_file", type=str, default="oscnetplus_metrics.txt", help="Filename for the output report")
     args = parser.parse_args()
 
     evaluate_oscnet_image(args.results_dir, args.output_file)

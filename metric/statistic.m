@@ -1,9 +1,9 @@
 % PSNR/SSIM computation for SynDeepLesion
 clear all;
-test_input='save_results\input\';
-test_mask = 'metric\mask\';
-test_gt = 'save_results\gt\';
-test_osc ='save_results\osc\';
+test_input='save_results/input/';
+test_mask = 'metric/mask/';
+test_gt = 'save_results/gt/';
+test_osc ='save_results/oscplus/';
 
 % group according to the metal size
 psnrall_group1_82 =0;
@@ -21,23 +21,27 @@ ssimall_group4_95 =0;
 psnrall_group5_46 =0;
 ssimall_group5_46 =0;
 group1num = 0;
-  group2num = 0;
- group3num = 0;
- group4num = 0;
- group5num = 0;
+group2num = 0;
+group3num = 0;
+group4num = 0;
+group5num = 0;
    
 for i = 1:200
-    i
-    maxRef = max(x_true(:));
-    maxVal = 255;
     startpoint = 10*(i-1)+1;
     endpoint = 10*i;
+
+    % Load the first x_true image of the group to compute maxRef
+    x_true = im2double(imread(strcat(test_gt, sprintf('%d.png', startpoint))));
+    x_true = x_true(:,:,1);
+    maxRef = max(x_true(:));
+    maxVal = 255;
+
     count = 0;
     for j=startpoint:endpoint
         count = count +1;
          mask = im2double(imread(strcat(test_mask,sprintf('%d.png',count))));  % groundtruth 
          mask = mask(:,:,1);
-         xout = im2double(imread(strcat(test_dir, sprintf('%d.png',j))));    
+         xout = im2double(imread(strcat(test_input, sprintf('%d.png',j))));
          xout = xout(:,:,1);
          x_true = im2double(imread(strcat(test_gt,sprintf('%d.png',j))));
          x_true = x_true(:,:,1);
@@ -67,10 +71,10 @@ end
 ALLPSNR = psnrall_group1_82 + psnrall_group2_73 + psnrall_group3_110 + psnrall_group4_95 + psnrall_group5_46;
 ALLSSIM = ssimall_group1_82 + ssimall_group2_73 + ssimall_group3_110 + ssimall_group4_95 + ssimall_group5_46;
 fprintf('psnr=%6.4f, ssim=%6.4f\n',psnrall_group1_82/group1num,ssimall_group1_82/group1num)
-fprintf('psnr=%6.4f, ssim=%6.4f\n', psnrall_group2_73/group1num, ssimall_group2_73/group1num)
-fprintf('psnr=%6.4f, ssim=%6.4f\n',psnrall_group3_110/group1num,ssimall_group3_110/group1num)
-fprintf('psnr=%6.4f, ssim=%6.4f\n', psnrall_group4_95/group1num, ssimall_group4_95/group1num)
-fprintf('psnr=%6.4f, ssim=%6.4f\n',psnrall_group5_46/group1num,ssimall_group5_46/group1num)
+fprintf('psnr=%6.4f, ssim=%6.4f\n', psnrall_group2_73/group2num, ssimall_group2_73/group1num)
+fprintf('psnr=%6.4f, ssim=%6.4f\n',psnrall_group3_110/group3num,ssimall_group3_110/group1num)
+fprintf('psnr=%6.4f, ssim=%6.4f\n', psnrall_group4_95/group4num, ssimall_group4_95/group1num)
+fprintf('psnr=%6.4f, ssim=%6.4f\n',psnrall_group5_46/group5num,ssimall_group5_46/group1num)
 fprintf('AVEpsnr=%6.4f, AVEssim=%6.4f\n',ALLPSNR/2000,ALLSSIM/2000)
 
 function im = imscale(im0, maxRef, maxVal)
@@ -95,19 +99,19 @@ function [ PSNR ] = psnr( f1,f2 )
 % ERMS = sqrt(sum(e.^2)/(m*n));
 % % PSNR=10log10(M*N/MSE); 
 % function PSNR = psnr(f1, f2)
-%计算两幅图像的峰值信噪比
+%计算两幅图像的峰值信噪比 # Calculate the peak signal-to-noise ratio of two images.
 k=1;
 if max(f1(:))>2
 k = 8;
 end
 
-%k为图像是表示地个像素点所用的二进制位数，即位深。
+%k为图像是表示地个像素点所用的二进制位数，即位深。# k is the number of binary digits used to represent each pixel in an image, i.e., the bit depth.
 fmax = 2.^k - 1;
 a = fmax.^2;
 e = double(f1) - double(f2);
 [m, n] = size(e);
 MSE=sum(sum(e.^2))/(m*n);
-PSNR = 10*log10(1/MSE);  % psnr计算公式 20*log10(data_range/(rmse)=10log10(data_range^2/mse) rmse = sqrt(mse);
+PSNR = 10*log10(1/MSE);  % psnr计算公式 (calculation formula)20*log10(data_range/(rmse)=10log10(data_range^2/mse) rmse = sqrt(mse);
 end
 
 

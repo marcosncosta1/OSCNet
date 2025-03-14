@@ -14,8 +14,8 @@ from network.oscnetplus import OSCNetplus
 
 parser = argparse.ArgumentParser(description="OSCNet_Test")
 #for model_selection
-parser.add_argument('--model', type=str, default="osc", help='osc or oscplus')
-parser.add_argument("--model_dir", type=str, default="model_osc/net_latest.pt", help='path to model file')
+parser.add_argument('--model', type=str, default="oscplus", help='osc or oscplus')
+parser.add_argument("--model_dir", type=str, default="model_oscplus/net_latest.pt", help='path to model file')
 parser.add_argument("--data_path", type=str, default="data/test/", help='path to test data')
 parser.add_argument("--use_GPU", type=bool, default=True, help='use GPU or not')
 parser.add_argument("--gpu_id", type=str, default="0", help='GPU id')
